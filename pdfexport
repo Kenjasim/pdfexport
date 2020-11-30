@@ -2,9 +2,9 @@
 if [ $# -eq 0 ]; then
     echo "Export a markdown file using a latex header to a pdf"
     echo ""
-    echo "usage: pdfexport <path/to/mdfile> <path/to/pdfout> [--toc]"
+    echo "usage: pdfexport <path/to/mdfile> <path/to/pdfout>"
     exit 1
 fi
 
 
-pandoc -N -s "$1" -o  "$2"  --include-in-header ~/bin/header.tex -V fontsize=11pt -V=subgraph $3 
+pandoc -N -s "$1" -o  "$2"  --highlight-style tango --include-in-header ~/bin/header.tex -V fontsize=11pt -V=subgraph --toc
