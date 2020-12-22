@@ -7,4 +7,4 @@ if [ $# -eq 0 ]; then
 fi
 
 
-pandoc -N -s "$1" -o  "$2"  --highlight-style tango --include-in-header ~/bin/header.tex -V fontsize=11pt -V=subgraph --toc
+pandoc -N -s "$1" -o  "$2"  --highlight-style tango --include-in-header ~~/projects/pdfexport/header.tex -V fontsize=11pt -V=subgraph --toc
