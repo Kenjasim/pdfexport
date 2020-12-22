@@ -1,7 +1,7 @@
 table-of-contents: true
 number-sections: true
 highlight-style: tango
-include-in-header: /home/kenjasim/projects/pdfexport/header.tex
+include-in-header: /Users/kenan/Documents/Projects/pdfexporter/header.tex
 variables:
   fontsize: 11pt
   subgraph: true
