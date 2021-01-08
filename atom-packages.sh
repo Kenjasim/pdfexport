@@ -7,3 +7,4 @@ apm install pandoc-pdf
 apm install pdf-view
 apm install markdown-writer
 apm install markdown-image-assistant
+apm install one-black-syntax
