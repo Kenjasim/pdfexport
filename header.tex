@@ -3,11 +3,14 @@
 
 %Margin Setting
 \usepackage[margin=0.5in,includefoot]{geometry}
-%Page Number and Header+Footer
+
+% Fonts
 \usepackage{cmbright}
 \usepackage[T1]{fontenc}
+
+%Page Number and Header+Footer
 \usepackage{fancyhdr}
-\fancyhead{}
+\fancyhead[]{}
 \pagestyle{fancy}
 \fancyfoot{}
 \fancyfoot[R]{\thepage}
@@ -45,31 +48,27 @@
 \setlist[itemize]{leftmargin=*}
 \setlist[enumerate]{leftmargin=*}
 
-% Add a page break after every section
-\newcommand{\sectionbreak}{\clearpage}
-
 
 % Main Page
-\makeatletter         
+\makeatletter
 \renewcommand\maketitle{\thispagestyle{empty}
 {\raggedright % Note the extra {
-\hrule 
+\hrule
 \vspace{2ex}
 {\Huge \@title }\\[2ex]
 {\large \@author}\\[2ex]
 {\large \@date}
 }}% Note the extra }
-  
-\makeatother
+
+% Add a page break after every section
+\newcommand{\sectionbreak}{\clearpage}
 
 %Titles
-\titleformat{\section}{\normalfont\Large\bfseries}{\thesection. }{0.1em}{}
+\titleformat{\section}{\normalfont\Large\bfseries}{Section \thesection: }{0.1em}{}[\vspace{6pt}]
 \newcommand{\sectionfont}{\large\bfseries}
 \titleformat{\subsection}[block]
-  {\normalfont\fontsize{12}{14}\bfseries}
-  {\thesubsection\vspace{2pt}\enspace}
-  {0pt}
-  {}[\vspace{2pt}\titlerule]
+  {\titlerule\addvspace{-2pt}\normalfont\fontsize{12}{14}\bfseries}
+  {\thesubsection\enspace}{0pt}{}[\vspace{2pt}\titlerule]
 \titleformat{\subsubsection}[hang]
 	{\normalfont\fontsize{11}{12}\bfseries}
 	{}
