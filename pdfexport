@@ -1,10 +1,153 @@
 #!/bin/bash
-if [ $# -eq 0 ]; then
-    echo "Export a markdown file using a latex header to a pdf"
-    echo ""
-    echo "usage: pdfexport <path/to/mdfile> <path/to/pdfout>"
+########################################################
+# Converts a markdown file given a latex header file
+# and some options file to create a pdf
+# Author: Kenan Jasim
+########################################################
+
+#######################################
+# Variables
+#######################################
+# Path to the defaults file
+DEFAULTS_FILE="defaults.yaml"
+OUTPUT_FILE="out.pdf"
+
+#######################################
+# Prints the usage of this shell script
+#######################################
+utils::usage(){
+    echo "Create a pdf from a markdown file"
+    echo "usage: pdfexport <path/to/mdfile> [-d] <path/to/defaults> [-o] <path/to/pdfout>"
+    echo "Options:"
+    echo "  -h: Prints this usage message"
+    echo "  -d: Path to defaults file (default is defaults.yaml)"
+    echo "  -o: Path to output file (default is out.pdf)"
+    echo "  -y: Print YAML header for pandoc markdown conversions"
+    exit 1
+}
+
+#######################################
+# Prints the yaml heading for pandoc
+#######################################
+utils::heading(){
+    echo "Heading:"
+    echo "For pandoc conversions to markdown, you can add a yaml heading to specify title, author and date"
+    echo "---"
+    echo "title:"       
+    echo "author: <name>" 
+    echo "date: \today"
+    echo "---"
+    exit 1
+}
+
+
+#######################################
+# Set the path to the defaults file
+# Globals:
+#   DEFAULTS_FILE
+# Arguments:
+#   path_to_default_file
+#######################################
+vars::set_defaults(){
+    DEFAULTS_FILE = $1
+}
+
+#######################################
+# Set the path to output markdown file
+# Globals:
+#   OUTPUT_FILE
+# Arguments:
+#   output_file_path
+#######################################
+vars::set_output(){
+    OUTPUT_FILE = $1
+}
+
+
+#######################################
+# Run pandoc with the variables set
+# Globals:
+#   INPUT_FILE
+#   DEFAULTS_FILE
+#   OUTPUT_FILE
+# Arguments:
+#   path_to_input_file
+#######################################
+pandoc::run(){
+    if [ ! -f "$DEFAULTS_FILE" ]; then
+        echo "[WARN] Defaults file does not exist, running without"
+        pandoc $1 -o $OUTPUT_FILE 
+    else
+        pandoc $1 -o $OUTPUT_FILE --defaults $DEFAULTS_FILE
+    fi
+}
+
+
+
+#######################################
+# Main script logic
+#######################################
+
+# Check if pandoc is installed
+if ! command -v pandoc &> /dev/null
+then
+    echo "Pandoc required, please install"
+    exit 1
+fi
+
+# Check if pandoc is installed
+if ! command -v pdflatex &> /dev/null
+then
+    echo "PDFLatex required, please install"
     exit 1
 fi
 
 
-pandoc -N -s "$1" -o  "$2"  --highlight-style tango --include-in-header ~/Documents/projects/pdfexport/header.tex -V fontsize=11pt -V=subgraph --toc
+while getopts ":i:o:d:hy" opt; do 
+  case ${opt} in
+    d ) 
+      vars:set_defaults $OPTARG
+      ;;
+    h ) 
+      utils::usage
+      ;;
+    y ) 
+      utils::heading
+      ;;
+    o ) 
+      vars::set_output $OPTARG
+      ;;
+    : )
+      echo "Invalid option: $OPTARG requires an argument" 1>&2
+      ;;
+    \? ) utils:usage
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
+# Check if an input file has been provided
+if [ $# -eq 0 ]; then
+    echo "[ERROR] No input file has been provided"
+    echo
+    utils::usage
+fi
+
+# Run the pandoc command with the input file specified
+pandoc::run $1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# pandoc -N -s "$1" -o  "$2"  --highlight-style tango --include-in-header ~/Documents/projects/pdfexport/header.tex -V fontsize=11pt -V=subgraph --toc
