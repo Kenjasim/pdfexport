@@ -1,7 +1,0 @@
-table-of-contents: true
-number-sections: true
-highlight-style: tango
-include-in-header: header.tex
-variables:
-  fontsize: 11pt
-  subgraph: true
